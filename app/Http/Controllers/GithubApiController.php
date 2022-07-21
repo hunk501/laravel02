@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use Exception;
 
@@ -16,14 +17,59 @@ class GithubApiController extends Controller
    */
   public function fetchUsernames(Request $request)
   {
+    $output = null;
+    try {
+      // Set key to be used in redis cache
+      $key = $this->generateKey($request->search);
+      
+      /**
+       * Check if key exist from Redis Cache
+       */
+      $githubCache = Redis::get($key);
+      if(isset($githubCache)) {
+        /**
+         * Set output from Redis cache
+         */
+        $output = [
+          'success' => true,
+          'message' => 'Record from Redis Cache',
+          'data' => json_decode($githubCache)
+        ];
+      } 
+      else {
+        /**
+         * Call github api
+         */
+        $githubUsers = $this->callGithubApi($request->search);
+        if($githubUsers === false) throw new Exception("Github username was not found", 1);
+        
+        /**
+         * Build response
+         */
+        $buildData = $this->buildResponse($githubUsers);
+        if($buildData === false) throw new Exception("Error in building response", 1);
+        
+        /**
+         * Save Redis cache
+         */
+        $key = $this->generateKey($buildData['login']);
+        Redis::set($key, json_encode($buildData), 'EX', 120); // Store for 2 minute
 
-    // Check if existing in Redis
-    // if not callGithubApi
-    $response = $this->callGithubApi($request->search);
-
-    // Build response
-    $data = $this->buildResponse($response);
-    $output = ($data !== false) ? $data : [];
+        /**
+         * Set output
+         */
+        $output = [
+          'success' => true,
+          'message' => 'Record from Github API',
+          'data' => $buildData
+        ];
+      }
+    } catch (Exception $ex) {
+      $output = [
+        'success' => false,
+        'message' => $ex->getMessage()
+      ];
+    }
 
     return response()->json($output, 200);
   }
@@ -40,13 +86,23 @@ class GithubApiController extends Controller
       curl_setopt($ch, CURLOPT_URL, $url);
       curl_setopt($ch, CURLOPT_USERAGENT, 'Awesome-Octocat-App');
 
-      $response = curl_exec($ch);
+      $exec = curl_exec($ch);
 
+      // Close connection
       curl_close($ch);
 
+      /**
+       * Check if we got curl connection error
+       */
       if(curl_error($ch)) throw new Exception(curl_error($ch), 1);
       
-      return json_decode($response, true);
+      $response = json_decode($exec, true);
+      /**
+       * Validate if valid github user
+       */
+      if(isset($response['message'])) throw new Exception($response['message'], 1);
+      
+      return $response;
     } catch (Exception $ex) {
       // Logger
 
@@ -69,5 +125,10 @@ class GithubApiController extends Controller
       // Logger
       return false;
     }
+  }
+
+  protected function generateKey($str) 
+  {
+    return 'github_' . $str;
   }
 }

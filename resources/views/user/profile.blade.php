@@ -6,16 +6,26 @@
 
       <title>Profile Page</title>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+      <style>
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+          padding: 15px;
+        }
+        thead {
+          font-weight: bold;
+        }
+      </style>
     </head>
     <body class="antialiased">
         <div>
           <div>
-            <p><h2>Profile</h2></p>
+            <p><h2>Fetch Github Usernames</h2></p>
             <form id="myform">
               <p><input type="text" id="search" name='search' placeholder="Github Username"/> &nbsp; <button>Search</button></p>
             </form>
             <div>
-              <table>
+              <table padding="60">
                 <thead>
                   <tr>
                     <td>Name</td>
@@ -62,7 +72,11 @@
               },
               success: function(res) {
                 console.log(res);
-                buildData(res);
+                if(res.success) {
+                  buildData(res.data);
+                } else {
+                  $('#results').html('<tr><td colspan="6" style="color:red;">'+ res.message +'</td></tr>');
+                }
               },
               error: function(er) {
                 console.log(er);
