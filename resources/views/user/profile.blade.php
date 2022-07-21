@@ -72,14 +72,16 @@
               url: $('#api').val(),
               beforeSend: function() {
                 console.log('beforesend');
-                $('#results').html('');
+                //$('#results').html('');
               },
               success: function(res) {
                 console.log(res);
                 if(res.success) {
+                  $("#"+ res.data.login).remove();
                   buildData(res.data);
                 } else {
-                  $('#results').html('<tr><td colspan="6" style="color:red;">'+ res.message +'</td></tr>');
+                  //$('#results').html('<tr><td colspan="6" style="color:red;">'+ res.message +'</td></tr>');
+                  alert(res.message);
                 }
               },
               error: function(er) {
@@ -90,7 +92,7 @@
           }
 
           function buildData(user) {
-            let tr = '<tr>';
+            let tr = '<tr id="'+ user.login +'">';
 
             tr += '<td>' + user.name + '</td>';
             tr += '<td>' + user.login + '</td>';
@@ -100,7 +102,7 @@
             tr += '<td>' + user.avarage_follower + '</td>';
             tr += '</tr>';
 
-            $('#results').html(tr);
+            $('#results').prepend(tr);
           }
         </script>
     </body>
