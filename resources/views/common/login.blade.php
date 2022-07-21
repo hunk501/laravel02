@@ -28,7 +28,7 @@
                         <p><h2>Login</h2></p>
                         <p><input type="text" name="username" placeholder="Username"/></p>
                         <p><input type="password" name="password" placeholder="Password"/></p>
-                        <p><button>Submit</button>
+                        <p><button>Submit</button> &nbsp; <a href="{{ url('/register') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Register</a></p>
                     </form>
                 </div>
             @endif
