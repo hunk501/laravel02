@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class GithubApiController extends Controller
@@ -65,6 +66,9 @@ class GithubApiController extends Controller
         ];
       }
     } catch (Exception $ex) {
+      
+      Log::error($ex->getMessage());
+
       $output = [
         'success' => false,
         'message' => $ex->getMessage()
@@ -105,6 +109,7 @@ class GithubApiController extends Controller
       return $response;
     } catch (Exception $ex) {
       // Logger
+      Log::error($ex->getMessage());
 
       return false;
     }
@@ -123,6 +128,8 @@ class GithubApiController extends Controller
       ];
     } catch (\Throwable $th) {
       // Logger
+      Log::error($ex->getMessage());
+      
       return false;
     }
   }

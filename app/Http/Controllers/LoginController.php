@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 // Models
@@ -36,6 +37,7 @@ class LoginController extends Controller
       return redirect("/profile");
 
     } catch (Exception $ex) {
+      Log::error($ex->getMessage());
       return redirect('/')->withErrors($ex->getMessage());
     }
   }

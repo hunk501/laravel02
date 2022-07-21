@@ -22,7 +22,11 @@
           <div>
             <p><h2>Fetch Github Usernames</h2></p>
             <form id="myform">
-              <p><input type="text" id="search" name='search' placeholder="Github Username"/> &nbsp; <button>Search</button></p>
+              <p>
+                <input type="text" id="search" name='search' placeholder="Username"/> &nbsp; 
+                <button>Search</button> &nbsp; 
+                <a href="{{ url('/') }}">Home</a>
+              </p>
             </form>
             <div>
               <table padding="60">
@@ -32,8 +36,8 @@
                     <td>Login</td>
                     <td>Company</td>
                     <td>Followers</td>
-                    <td>Repos</td>
-                    <td>Average</td>
+                    <td>Public Repo</td>
+                    <td>Average of Followers</td>
                   </tr>
                 </thead>
                 <tbody id="results">
