@@ -5,11 +5,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Login Page</title>
+        <style>
+            html,
+            body,
+            .container {
+            height: 100%;
+            overflow: hidden;
+            }
 
+            .container {
+            display: flex;
+            justify-content: center;
+            }
+
+            #object {
+            height: 300px;
+            width: 500px;
+            align-self: center;
+            }
+        </style>
     </head>
     <body class="antialiased">
-        <div>
-            <div>
+        <div class="container">
+            <div id="object">
                 <form method="POST" action="{{ route('login.validate') }}">
                     @csrf
                     <p><h2>Login</h2></p>

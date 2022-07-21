@@ -5,11 +5,29 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Register Page</title>
+        <style>
+            html,
+            body,
+            .container {
+              height: 100%;
+              overflow: hidden;
+            }
 
+            .container {
+              display: flex;
+              justify-content: center;
+            }
+
+            #object {
+              height: 300px;
+              width: 500px;
+              align-self: center;
+            }
+        </style>
     </head>
     <body class="antialiased">
-        <div>
-          <div>
+        <div class="container">
+          <div id="object">
             <form method="POST" action="{{ route('register.validate') }}">
               @csrf
               <p><h2>Register</h2></p>

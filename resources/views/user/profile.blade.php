@@ -7,6 +7,23 @@
       <title>Profile Page</title>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
       <style>
+        html,
+        body,
+        .container {
+          height: 100%;
+          overflow: hidden;
+        }
+
+        .container {
+          display: flex;
+          justify-content: center;
+        }
+
+        #object {
+          height: 300px;
+          width: 800px;
+          align-self: center;
+        }
         table, th, td {
           border: 1px solid black;
           border-collapse: collapse;
@@ -18,8 +35,8 @@
       </style>
     </head>
     <body class="antialiased">
-        <div>
-          <div>
+        <div class="container">
+          <div id="object">
             <p><h2>Fetch Github Usernames</h2></p>
             <form id="myform">
               <p>
