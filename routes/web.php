@@ -27,4 +27,4 @@ Route::post('/validate', [LoginController::class, 'validateForm'])->name('login.
 Route::get('/register', [RegisterController::class, 'show']);
 Route::post('/validate-form', [RegisterController::class, 'validateForm'])->name('register.validate');
 
-Route::get('/user/{id}', [UserController::class, 'show']);
+Route::get('/profile', [UserController::class, 'profile']);
