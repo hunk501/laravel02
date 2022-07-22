@@ -46,15 +46,15 @@
               </p>
             </form>
             <div>
-              <table padding="60">
+              <table id="mytable" padding="60">
                 <thead>
                   <tr>
-                    <td>Name</td>
-                    <td>Login</td>
-                    <td>Company</td>
-                    <td>Followers</td>
-                    <td>Public Repo</td>
-                    <td>Average of Followers</td>
+                    <th>Name</th>
+                    <th>Login</th>
+                    <th>Company</th>
+                    <th>Followers</th>
+                    <th>Public Repo</th>
+                    <th>Average of Followers</th>
                   </tr>
                 </thead>
                 <tbody id="results">
@@ -73,10 +73,18 @@
               event.preventDefault();
               
               var str = $('#search').val();
-              if(str) {
-                ajaxQuery(str);
-              } else {
+              var keepGoing = true;
+              $("#results tr").length;
+              if($("#results tr").length >= 10) {
+                alert('Maximum limit only 10');
+                keepGoing = false;
+              }
+              if(!str) {
                 alert('Please fill out string to be search!');
+                keepGoing = false;
+              }
+              if(keepGoing) {
+                ajaxQuery(str);
               }
             });
 
@@ -120,7 +128,19 @@
             tr += '</tr>';
 
             $('#results').prepend(tr);
+            // Sort table
+            sortTable($('#mytable'));
           }
+
+          function sortTable(table) {
+            var asc = 'asc';
+            var tbody = table.find('tbody');
+
+            tbody.find('tr').sort(function(a, b) {
+              return $('td:first', a).text().localeCompare($('td:first', b).text());
+            }).appendTo(tbody);
+          }
+
         </script>
     </body>
 </html>

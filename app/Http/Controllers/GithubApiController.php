@@ -67,7 +67,7 @@ class GithubApiController extends Controller
       }
     } catch (Exception $ex) {
       
-      Log::error($ex->getMessage());
+      Log::error($ex);
 
       $output = [
         'success' => false,
@@ -109,7 +109,7 @@ class GithubApiController extends Controller
       return $response;
     } catch (Exception $ex) {
       // Logger
-      Log::error($ex->getMessage());
+      Log::error($ex);
 
       return false;
     }
@@ -118,17 +118,21 @@ class GithubApiController extends Controller
   protected function buildResponse($response) 
   {
     try {
+      $ave = 0;
+      if((int)$response['public_repos'] > 0) {
+        $ave = round(($response['followers'] / $response['public_repos']), 2);
+      }
       return [
         'name' => $response['name'],
         'login' => $response['login'],
         'company' => $response['company'],
         'followers' => $response['followers'],
         'repositories' => $response['public_repos'],
-        'avarage_follower' => round(($response['followers'] / $response['public_repos']), 2),
+        'avarage_follower' => $ave,
       ];
-    } catch (\Throwable $th) {
+    } catch (Exception $ex) {
       // Logger
-      Log::error($ex->getMessage());
+      Log::error($ex);
       
       return false;
     }
