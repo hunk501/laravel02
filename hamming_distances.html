@@ -1,0 +1,20 @@
+<html>
+  <body>
+    <script>
+      function hammingDistance(p1, p2)
+      {
+        let x = p1 ^ p2;
+        let setBits = 0;
+      
+        while (x > 0) {
+          setBits += x & 1;
+          x >>= 1;
+        }
+      
+        return setBits;
+      }
+      let a = 1, b = 4;
+      document.write(hammingDistance(a, b));
+    </script>
+  </body>
+</html>

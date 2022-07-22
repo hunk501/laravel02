@@ -30,3 +30,9 @@ Example: php artisan migrate
 
 ## Step 5 - Launch application
 open browser then navigate to http://localhost:8012
+
+
+## for Hamming Distance
+open file in the browser
+
+./hamming_distances.html
