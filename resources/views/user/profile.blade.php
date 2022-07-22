@@ -10,11 +10,6 @@
         html,
         body,
         .container {
-          height: 100%;
-          overflow: hidden;
-        }
-
-        .container {
           display: flex;
           justify-content: center;
         }
